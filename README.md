@@ -13,8 +13,23 @@ The database consists of the following tables:
 - roles
 - interviews
 
-##  Key Analysis Questions
+##  Data Analysis and Findings
 - Which platform has the highest interview rate?
+  
+  ```sql
+SELECT p.platform_name,ROUND(
+        SUM(CASE WHEN a.status = 'Interview' THEN 1 ELSE 0 END) 
+        / COUNT(*) * 100,
+        2
+    ) AS interview_rate
+FROM applications a
+JOIN platforms p
+    ON a.platform_id = p.platform_id
+GROUP BY p.platform_name
+ORDER BY interview_rate DESC
+LIMIT 1;
+```
+
 - What percentage of applications are ghosted?
 - Average response time per company
 - Which roles get the most callbacks?
